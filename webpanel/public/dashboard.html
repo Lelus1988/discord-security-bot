@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – Security Bot</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <h1>🔒 Security Bot Dashboard</h1>
+  <div class="user-info">
+    <span id="username">…</span>
+    <a href="/auth/logout" class="logout">Logout</a>
+  </div>
+</header>
+<main class="container">
+  <h2 style="margin-bottom:20px">Deine Server</h2>
+  <div id="loading" class="loading">Lade Server</div>
+  <div id="empty" class="empty-state" style="display:none">
+    Du verwaltest keine Server, auf denen dieser Bot aktiv ist.
+  </div>
+  <div id="grid" class="grid"></div>
+</main>
+
+<script src="/js/common.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

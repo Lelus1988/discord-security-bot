@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Server verwalten – Security Bot</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <h1 id="guild-title">⚙️ Server verwalten</h1>
+  <div class="user-info">
+    <a href="/dashboard" class="back">← Zurück zur Übersicht</a>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tabs">
+    <div class="tab active" data-tab="overview">📊 Übersicht</div>
+    <div class="tab" data-tab="members">👥 Mitglieder</div>
+    <div class="tab" data-tab="roles">🎭 Ränge</div>
+    <div class="tab" data-tab="welcome">👋 Willkommen &amp; Abschied</div>
+    <div class="tab" data-tab="rules">📜 Regeln</div>
+    <div class="tab" data-tab="commands">⚡ Eigene Befehle</div>
+    <div class="tab" data-tab="logs">📋 Logs</div>
+    <div class="tab" data-tab="settings">🛡️ Einstellungen</div>
+  </div>
+
+  <!-- ── Übersicht ──────────────────────────────────────────────────── -->
+  <div class="tab-panel active" id="panel-overview">
+    <div id="overview-content" class="loading">Lade Statistiken</div>
+  </div>
+
+  <!-- ── Mitglieder ─────────────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-members">
+    <div class="card">
+      <div class="flex gap-8" style="justify-content:space-between">
+        <h3 class="mb-0">👥 Mitglieder</h3>
+        <div class="flex gap-8">
+          <input type="text" id="member-search" placeholder="Suchen…" style="max-width:220px;margin-bottom:0"/>
+          <button class="secondary sm" onclick="loadMembers(true)">🔄 Aktualisieren</button>
+        </div>
+      </div>
+    </div>
+    <div id="members-content" class="loading">Lade Mitglieder</div>
+  </div>
+
+  <!-- ── Ränge ──────────────────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-roles">
+    <div class="card">
+      <h3>➕ Neuen Rang erstellen</h3>
+      <div class="field-row">
+        <div>
+          <label>Name</label>
+          <input type="text" id="new-role-name" placeholder="z.B. Moderator"/>
+        </div>
+        <div style="max-width:100px">
+          <label>Farbe</label>
+          <input type="color" id="new-role-color" value="#5865f2"/>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <span class="label-text">Separat anzeigen (hoist)</span>
+        <label class="toggle"><input type="checkbox" id="new-role-hoist"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="label-text">Erwähnbar</span>
+        <label class="toggle"><input type="checkbox" id="new-role-mentionable"><span class="slider"></span></label>
+      </div>
+      <button onclick="createRole()">Rang erstellen</button>
+    </div>
+    <div id="roles-content" class="loading">Lade Ränge</div>
+  </div>
+
+  <!-- ── Willkommen & Abschied ──────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-welcome">
+    <div class="card">
+      <h3>👋 Willkommensnachricht</h3>
+      <div class="toggle-row">
+        <span class="label-text">Aktiviert</span>
+        <label class="toggle"><input type="checkbox" id="welcome-enabled"><span class="slider"></span></label>
+      </div>
+      <label>Kanal</label>
+      <select id="welcome-channel"></select>
+      <label>Nachricht</label>
+      <textarea id="welcome-message" placeholder="👋 Willkommen {user} auf **{server}**!"></textarea>
+      <p class="hint">Platzhalter: <code class="inline">{user}</code> <code class="inline">{username}</code> <code class="inline">{server}</code> <code class="inline">{memberCount}</code></p>
+      <div class="toggle-row">
+        <span class="label-text">Als Embed senden</span>
+        <label class="toggle"><input type="checkbox" id="welcome-embed"><span class="slider"></span></label>
+      </div>
+      <div class="flex gap-8">
+        <button onclick="previewMessage('welcome')">Vorschau</button>
+        <button class="secondary" onclick="saveWelcomeLeave()">💾 Speichern</button>
+      </div>
+      <div id="welcome-preview" class="small text-dim mt-8"></div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 Abschiedsnachricht</h3>
+      <div class="toggle-row">
+        <span class="label-text">Aktiviert</span>
+        <label class="toggle"><input type="checkbox" id="leave-enabled"><span class="slider"></span></label>
+      </div>
+      <label>Kanal</label>
+      <select id="leave-channel"></select>
+      <label>Nachricht</label>
+      <textarea id="leave-message" placeholder="👋 **{username}** hat den Server verlassen."></textarea>
+      <p class="hint">Platzhalter: <code class="inline">{user}</code> <code class="inline">{username}</code> <code class="inline">{server}</code> <code class="inline">{memberCount}</code></p>
+      <div class="flex gap-8">
+        <button onclick="previewMessage('leave')">Vorschau</button>
+        <button class="secondary" onclick="saveWelcomeLeave()">💾 Speichern</button>
+      </div>
+      <div id="leave-preview" class="small text-dim mt-8"></div>
+    </div>
+  </div>
+
+  <!-- ── Regeln ─────────────────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-rules">
+    <div class="card">
+      <h3>📜 Server-Regeln</h3>
+      <label>Regel-Kanal</label>
+      <select id="rules-channel"></select>
+      <label>Regeltext (Markdown wird unterstützt)</label>
+      <textarea id="rules-text" style="min-height:220px" placeholder="1. Sei respektvoll&#10;2. Kein Spam&#10;3. …"></textarea>
+      <div class="flex gap-8">
+        <button class="secondary" onclick="saveRules()">💾 Speichern</button>
+        <button onclick="postRules()">📤 In Kanal posten</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Eigene Befehle ─────────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-commands">
+    <div class="card">
+      <h3>⚙️ Befehls-Präfix</h3>
+      <p class="hint">Das Zeichen, mit dem eigene Befehle beginnen, z.B. <code class="inline">!regeln</code></p>
+      <div class="flex gap-8">
+        <input type="text" id="cmd-prefix" maxlength="5" style="max-width:100px;margin-bottom:0"/>
+        <button onclick="savePrefix()">Speichern</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>➕ Neuen Befehl erstellen</h3>
+      <div class="field-row">
+        <div>
+          <label>Trigger (ohne Präfix)</label>
+          <input type="text" id="new-cmd-trigger" placeholder="z.B. regeln"/>
+        </div>
+        <div style="max-width:140px">
+          <label>Farbe (Embed)</label>
+          <input type="color" id="new-cmd-color" value="#5865f2"/>
+        </div>
+      </div>
+      <label>Antwort</label>
+      <textarea id="new-cmd-response" placeholder="Lies dir bitte die Regeln in #regeln durch!"></textarea>
+      <p class="hint">Platzhalter: <code class="inline">{user}</code> <code class="inline">{username}</code> <code class="inline">{server}</code> <code class="inline">{memberCount}</code></p>
+      <div class="toggle-row">
+        <span class="label-text">Als Embed senden</span>
+        <label class="toggle"><input type="checkbox" id="new-cmd-embed"><span class="slider"></span></label>
+      </div>
+      <button onclick="createCommand()">Befehl erstellen</button>
+    </div>
+
+    <div id="commands-content" class="loading">Lade Befehle</div>
+  </div>
+
+  <!-- ── Logs ───────────────────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-logs">
+    <div class="card">
+      <div class="flex gap-8" style="justify-content:space-between;flex-wrap:wrap">
+        <h3 class="mb-0">📋 Aktivitäts-Logs</h3>
+        <div class="flex gap-8">
+          <select id="log-filter" style="margin-bottom:0;width:auto">
+            <option value="ALL">Alle Typen</option>
+            <option value="MOD">Moderation</option>
+            <option value="SECURITY">Sicherheit</option>
+            <option value="RAID">Raid</option>
+            <option value="SPAM">Spam</option>
+            <option value="WARN">Warnung</option>
+            <option value="INFO">Info</option>
+          </select>
+          <button class="secondary sm" onclick="loadLogs()">🔄 Aktualisieren</button>
+        </div>
+      </div>
+    </div>
+    <div id="logs-content" class="loading">Lade Logs</div>
+  </div>
+
+  <!-- ── Einstellungen ──────────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-settings">
+    <div class="card">
+      <h3>🛡️ Schutzmodule</h3>
+      <div class="toggle-row">
+        <span class="label-text">Anti-Raid</span>
+        <label class="toggle"><input type="checkbox" id="antiRaidEnabled"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="label-text">Anti-Spam</span>
+        <label class="toggle"><input type="checkbox" id="antiSpamEnabled"><span class="slider"></span></label>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>Join-Schwellenwert (Raid)</label>
+          <input type="number" id="joinThreshold" min="2" max="50"/>
+        </div>
+        <div>
+          <label>Zeitfenster (Sekunden)</label>
+          <input type="number" id="windowSec" min="5" max="120"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Kanäle &amp; Rollen</h3>
+      <label>Log-Kanal</label>
+      <select id="logChannelId"></select>
+      <label>Moderator-Rolle</label>
+      <select id="modRoleId"></select>
+      <label>Ticket-Kategorie</label>
+      <select id="ticketCategoryId"></select>
+      <button class="secondary" onclick="saveGeneralSettings()">💾 Speichern</button>
+    </div>
+
+    <div class="card" id="owner-card" style="display:none">
+      <h3>🔑 Whitelist (nur Bot-Owner)</h3>
+      <p class="hint">Dieser Server ist auf der Whitelist und darf den Bot nutzen. Entfernen lässt den Bot den Server sofort verlassen.</p>
+      <button class="danger" onclick="toggleWhitelist(false)">Server von Whitelist entfernen</button>
+    </div>
+  </div>
+</main>
+
+<script src="/js/common.js"></script>
+<script src="/js/server.js"></script>
+</body>
+</html>
