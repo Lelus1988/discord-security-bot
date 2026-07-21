@@ -6,7 +6,7 @@ export async function connectDatabase(): Promise<void> {
   try {
     mongoose.set('strictQuery', true);
     await mongoose.connect(config.mongoUri);
-    logger.info(`MongoDB connected: ${config.mongoUri}`);
+    logger.info(`MongoDB connected succesfully`);
   } catch (err) {
     logger.error(`MongoDB connection failed: ${err}`);
     process.exit(1);

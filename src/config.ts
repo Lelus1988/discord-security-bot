@@ -20,7 +20,7 @@ export const config: BotConfig = {
   ownerId:           optional_env('OWNER_ID', '1454112721174921343'),
   allowedGuilds:     optional_env('ALLOWED_GUILDS', '').split(',').map(s => s.trim()).filter(Boolean),
   autoLeave:         optional_env('AUTO_LEAVE', 'true') === 'true',
-  mongoUri:          optional_env('MONGO_URI', 'mongodb://localhost:27017/securitybot'),
+  mongoUri:          optional_env('MONGO_URL', 'mongodb+srv://leluseuu:JivkSQ5fUe9JVrP@cluster0.1fddxag.mongodb.net/securitybot?appName=Cluster0'),
   webPort:           parseInt(optional_env('WEB_PORT', '3000'), 10),
   sessionSecret:     optional_env('SESSION_SECRET', 'changeme_session_secret'),
   oauth2RedirectUri: optional_env('OAUTH2_REDIRECT_URI', 'http://localhost:3000/auth/callback'),
