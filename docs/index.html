@@ -9,9 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0d0f12;
+    --bg: #0a0c10;
     --surface: #14171c;
     --surface-2: #1b1f26;
+    --glass: rgba(23, 27, 34, 0.55);
+    --glass-strong: rgba(23, 27, 34, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.07);
     --border: #262b33;
     --accent: #68818f;
     --accent-bright: #9db7c3;
@@ -36,6 +39,56 @@
     color: var(--text);
     font-family: var(--sans);
     line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .bg-glow{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .glow{
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.5;
+    will-change: transform;
+  }
+  .glow-1{
+    width: 640px; height: 640px;
+    top: -220px; left: -160px;
+    background: radial-gradient(circle at 35% 35%, #3d6d92, transparent 70%);
+    animation: drift1 28s ease-in-out infinite;
+  }
+  .glow-2{
+    width: 600px; height: 600px;
+    top: 60px; right: -220px;
+    background: radial-gradient(circle at 60% 40%, #4a7fa0, transparent 70%);
+    animation: drift2 34s ease-in-out infinite;
+  }
+  .glow-3{
+    width: 760px; height: 760px;
+    bottom: -320px; left: 12%;
+    background: radial-gradient(circle at 50% 50%, #2e4a63, transparent 70%);
+    animation: drift3 40s ease-in-out infinite;
+  }
+  .glow-4{
+    width: 420px; height: 420px;
+    top: 46%; left: 46%;
+    background: radial-gradient(circle at 50% 50%, #6a92ad, transparent 70%);
+    opacity: 0.28;
+    animation: drift2 22s ease-in-out infinite reverse;
+  }
+  @keyframes drift1{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(50px, 40px); } }
+  @keyframes drift2{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(-40px, 50px); } }
+  @keyframes drift3{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(30px, -40px); } }
+  @media (prefers-reduced-motion: reduce){
+    .glow{ animation: none !important; }
+  }
+  @media (max-width: 720px){
+    .glow{ filter: blur(80px); opacity: 0.4; }
   }
 
   a{ color: var(--accent-bright); }
@@ -48,11 +101,13 @@
 
   .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 24px; }
 
+  /* NAV */
   header.nav{
     position: sticky; top: 0; z-index: 50;
-    background: rgba(13,15,18,0.88);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(10,12,16,0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--glass-border);
   }
   .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding: 14px 24px; max-width: 1040px; margin:0 auto; }
   .brand{ font-family: var(--mono); font-weight:700; letter-spacing: 0.02em; color: var(--text); text-decoration:none; font-size: 15px; display:flex; align-items:center; gap:8px;}
@@ -77,13 +132,15 @@
 
   .terminal{
     margin-top: 54px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--glass);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid var(--glass-border);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+    box-shadow: 0 30px 70px -30px rgba(0,0,0,0.7);
   }
-  .terminal-bar{ display:flex; align-items:center; gap:8px; padding: 10px 14px; background: var(--surface-2); border-bottom:1px solid var(--border); }
+  .terminal-bar{ display:flex; align-items:center; gap:8px; padding: 10px 14px; background: rgba(27,31,38,0.5); border-bottom:1px solid var(--glass-border); }
   .terminal-bar .tdot{ width:10px; height:10px; border-radius:50%; background: #3a3f47; }
   .terminal-title{ margin-left: 8px; font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
   .terminal-body{ padding: 18px 20px; font-family: var(--mono); font-size: 13.5px; min-height: 260px; max-height: 340px; overflow-y:auto; }
@@ -110,12 +167,13 @@
   .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   @media (max-width: 860px){ .grid{ grid-template-columns: repeat(2,1fr); } }
   @media (max-width: 560px){ .grid{ grid-template-columns: 1fr; } }
-  .card{ background: var(--surface); border:1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .card{ background: var(--glass); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border:1px solid var(--glass-border); border-radius: 10px; padding: 20px; transition: border-color 0.2s, transform 0.2s; }
+  .card:hover{ border-color: var(--accent); transform: translateY(-2px); }
   .card h3{ font-family: var(--mono); font-size: 14.5px; margin: 0 0 8px; color: var(--text); }
   .card p{ font-size: 13.5px; color: var(--text-muted); margin:0; }
 
-  .panel{ background: var(--surface); border:1px solid var(--border); border-radius: 10px; overflow:hidden; }
-  .tabbar{ display:flex; flex-wrap:wrap; border-bottom:1px solid var(--border); background: var(--surface-2); }
+  .panel{ background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border:1px solid var(--glass-border); border-radius: 10px; overflow:hidden; }
+  .tabbar{ display:flex; flex-wrap:wrap; border-bottom:1px solid var(--glass-border); background: rgba(27,31,38,0.4); }
   .tabbar button{
     font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); background:none; border:none; padding: 13px 16px; cursor:pointer; border-bottom: 2px solid transparent;
   }
@@ -133,7 +191,7 @@
   .status-dot.offline{ background: #4a4f57; }
   .pill{ font-family: var(--mono); font-size: 11px; color: var(--text-muted); border:1px solid var(--border); padding: 2px 8px; border-radius: 20px; }
 
-  .tree{ font-family: var(--mono); font-size: 13.5px; background: var(--surface); border:1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .tree{ font-family: var(--mono); font-size: 13.5px; background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border:1px solid var(--glass-border); border-radius: 10px; padding: 18px 20px; }
   .tree ul{ list-style:none; margin:4px 0 4px 18px; padding:0; border-left: 1px solid var(--border); }
   .tree li{ margin: 3px 0; padding-left: 14px; position:relative; }
   .tree > ul{ margin-left:0; border-left:none; }
@@ -148,15 +206,15 @@
   .step{ display:grid; grid-template-columns: 40px 1fr; gap: 18px; padding-bottom: 34px; position:relative; }
   .step:last-child{ padding-bottom:0; }
   .step:not(:last-child):before{ content:""; position:absolute; left:19px; top:36px; bottom:0; width:1px; background: var(--border); }
-  .step-num{ counter-increment: step; font-family: var(--mono); width:38px; height:38px; border-radius:50%; border:1px solid var(--accent); color: var(--accent-bright); display:flex; align-items:center; justify-content:center; font-size:13px; background: var(--surface); }
+  .step-num{ counter-increment: step; font-family: var(--mono); width:38px; height:38px; border-radius:50%; border:1px solid var(--accent); color: var(--accent-bright); display:flex; align-items:center; justify-content:center; font-size:13px; background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
   .step-num:before{ content: counter(step); }
   .step h3{ font-family: var(--mono); font-size:15px; margin: 6px 0 8px; }
   .step p{ color: var(--text-muted); font-size: 13.5px; margin: 0 0 10px; }
-  pre.code{ background: var(--surface-2); border:1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 12.8px; overflow-x:auto; color: var(--text); position:relative; }
+  pre.code{ background: var(--glass-strong); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border:1px solid var(--glass-border); border-radius: 8px; padding: 14px 16px; font-size: 12.8px; overflow-x:auto; color: var(--text); position:relative; }
   .copy-btn{ position:absolute; top:8px; right:8px; font-family: var(--mono); font-size: 11px; color: var(--text-muted); background: var(--surface); border:1px solid var(--border); border-radius:5px; padding:4px 8px; cursor:pointer; }
   .copy-btn:hover{ color: var(--text); border-color: var(--accent); }
 
-  .callout{ border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13.5px; color: var(--text-muted); margin: 16px 0; }
+  .callout{ border-left: 3px solid var(--accent); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13.5px; color: var(--text-muted); margin: 16px 0; }
   .callout b{ color: var(--accent-bright); }
 
   footer{ padding: 40px 0 60px; text-align:center; color: var(--text-muted); font-family: var(--mono); font-size: 12.5px; }
@@ -165,6 +223,13 @@
 </style>
 </head>
 <body>
+
+<div class="bg-glow" aria-hidden="true">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <div class="glow glow-4"></div>
+</div>
 
 <header class="nav">
   <div class="nav-inner">
@@ -380,7 +445,6 @@ pm2 save</pre>
 </div>
 
 <script>
-
 (function(){
   const out = document.getElementById('term-output');
   const input = document.getElementById('term-input');
