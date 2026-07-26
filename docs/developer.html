@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Developer — Private Security-Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;600&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --glass: rgba(23, 27, 34, .55);
+            --glass-border: rgba(255, 255, 255, .07);
+            --accent: #68818f;
+            --accent-bright: #9db7c3;
+            --text: #e6e9ec;
+            --text-muted: #8b929b;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: .5;
+        }
+
+        .glow.one {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            left: -150px;
+            background: #3d6d92;
+        }
+
+        .glow.two {
+            width: 600px;
+            height: 600px;
+            bottom: -200px;
+            right: -150px;
+            background: #2e4a63;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 30px;
+        }
+
+        .section-head {
+            margin-bottom: 35px;
+        }
+
+        .section-num {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-family: var(--mono);
+            font-size: 32px;
+            margin: 10px 0;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+        }
+
+        .developer-card {
+            max-width: 380px;
+            margin: auto;
+            text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 35px;
+            transition: .25s;
+        }
+
+        .developer-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+        }
+
+        .developer-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            margin-bottom: 18px;
+
+        }
+
+        .developer-card h3 {
+            font-family: var(--mono);
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .developer-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .developer-links {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.12);
+        }
+
+        .discord {
+            background: #5865F2;
+        }
+
+        .github {
+            background: #24292f;
+        }
+
+        .social-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-glow">
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+</div>
+<div class="container">
+    <section id="developer">
+        <div class="section-head">
+            <div class="section-num">
+                Kontakt
+            </div>
+            <h2>
+                Developer
+            </h2>
+            <p class="section-desc">
+                Verantwortlich für Entwicklung, Architektur und Wartung des Projekts.
+            </p>
+        </div>
+        <div style="text-align:center;margin-bottom:16px">
+            <a href="index.html"
+               style="display:inline-block;background:var(--accent);color:#0d0f12;padding:8px 12px;border-radius:8px;text-decoration:none;font-family:var(--mono);font-weight:600">Zurück
+                zur Startseite</a>
+        </div>
+        <div class="developer-card">
+            <img
+                    class="developer-avatar"
+                    src="https://github.com/Lelus1988.png"
+                    alt="GitHub Avatar">
+            <h3>
+                Developer
+            </h3>
+            <p>
+                Main Developer · Security Bot Architecture
+            </p>
+            <div class="developer-links">
+                <a
+                        class="social-btn discord"
+                        href="https://discord.com/users/1454112721174921343"
+                        target="_blank"
+                        title="Discord">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                              d="M19.54 5.67A16.8 16.8 0 0 0 15.4 4.4l-.52 1.06a15.3 15.3 0 0 0-4.76 0L9.6 4.4a16.9 16.9 0 0 0-4.14 1.27C2.84 9.74 2.1 13.7 2.45 17.6a16.8 16.8 0 0 0 5.1 2.6l1.1-1.5c-.6-.2-1.17-.45-1.7-.75.14.1.3.18.44.27 3.1 1.45 6.46 1.45 9.52 0 .15-.09.3-.18.44-.27-.53.3-1.1.55-1.7.75l1.1 1.5a16.8 16.8 0 0 0 5.1-2.6c.4-4.52-.7-8.45-2.31-11.93ZM8.6 15.2c-.93 0-1.7-.86-1.7-1.92s.75-1.92 1.7-1.92 1.7.87 1.7 1.92-.76 1.92-1.7 1.92Zm6.8 0c-.93 0-1.7-.86-1.7-1.92s.75-1.92 1.7-1.92 1.7.87 1.7 1.92-.76 1.92-1.7 1.92Z"/>
+                    </svg>
+                </a>
+                <a
+                        class="social-btn github"
+                        href="https://github.com/Lelus1988"
+                        target="_blank"
+                        title="GitHub">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                              d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.58.1.8-.25.8-.56v-2.1c-3.2.7-3.9-1.35-3.9-1.35-.53-1.35-1.3-1.7-1.3-1.7-1.05-.7.08-.68.08-.68 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.95.1-.74.4-1.25.72-1.54-2.55-.3-5.23-1.28-5.23-5.7 0-1.25.45-2.27 1.2-3.07-.12-.3-.52-1.54.12-3.2 0 0 .98-.3 3.2 1.18a11.2 11.2 0 0 1 5.8 0c2.22-1.5 3.2-1.18 3.2-1.18.64 1.66.24 2.9.12 3.2.75.8 1.2 1.82 1.2 3.07 0 4.43-2.7 5.4-5.25 5.68.4.35.76 1.04.76 2.1v3.12c0 .3.22.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    <footer>
+        Private Security-Bot · Entwicklerseite
+    </footer>
+</div>
+</body>
+</html>
