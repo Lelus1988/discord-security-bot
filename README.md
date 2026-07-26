@@ -328,6 +328,6 @@ webpanel/
 
 <div align="center">
 
-Dies ist eine private Bot-Konfiguration für den persönlichen Gebrauch. Anpassungen und Erweiterungen für den eigenen Bedarf sind jederzeit möglich.
+Bitte ließ erst die Lizenz, bevor du den Code benutzt.
 
 </div>
