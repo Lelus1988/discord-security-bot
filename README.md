@@ -328,6 +328,6 @@ webpanel/
 
 <div align="center">
 
-Bitte ließ erst die Lizenz, bevor du den Code benutzt.
+Bitte ließ erst die [Lizenz](https://github.com/Lelus1988/discord-security-bot/blob/main/.LICENSE), bevor du den Code benutzt.
 
 </div>
