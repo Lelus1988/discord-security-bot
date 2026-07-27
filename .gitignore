@@ -5,3 +5,6 @@ dist-webpanel/
 logs/
 *.log
 .DS_Store
+.idea/
+data/backups/
+data/tickets-archive.json
