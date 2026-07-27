@@ -35,7 +35,8 @@ export async function handleRestart(
   // Sauberes Beenden aller Verbindungen, bevor der Prozess beendet wird.
   // Der eigentliche Neustart übernimmt der Prozess-Manager (z.B. PM2),
   // der den Prozess nach dem Exit automatisch neu startet.
-  setTimeout(async () => {
+  // Warte nicht auf Interaction-Timeout - erledige cleanup sofort
+  (async () => {
     try {
       await mongoose.connection.close();
     } catch (err) {
@@ -43,5 +44,5 @@ export async function handleRestart(
     }
     client.destroy();
     process.exit(0);
-  }, 1500);
+  })();
 }

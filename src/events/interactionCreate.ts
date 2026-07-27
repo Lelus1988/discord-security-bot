@@ -7,6 +7,7 @@ import { GuildService } from '../services/GuildService';
 import { TicketService } from '../services/TicketService';
 import { PermissionError, replyError } from '../middleware/permissions';
 import { logger } from '../utils/logger';
+import { reportError, extractCommandOptions } from '../utils/errorReporter';
 
 const event: BotEvent = {
   name: 'interactionCreate',
@@ -55,8 +56,18 @@ async function handleCommand(
     if (err instanceof PermissionError) {
       await replyError(interaction, err.message);
     } else {
-      logger.error(`Error in /${interaction.commandName}: ${err}`);
-      await replyError(interaction, 'An internal error occurred. Please try again.');
+      // Sammle Fehlerinformationen
+      const errorContext = {
+        userId: interaction.user.id,
+        username: interaction.user.tag,
+        commandName: interaction.commandName,
+        subcommand: interaction.options.getSubcommand(false) ?? '(keine)',
+        options: extractCommandOptions(interaction),
+        guildId: interaction.guildId,
+      };
+
+      // Sende detaillierte Fehlermeldung
+      await reportError(interaction, err, errorContext);
     }
   }
 }

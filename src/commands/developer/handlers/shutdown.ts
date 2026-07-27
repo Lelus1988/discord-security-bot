@@ -31,7 +31,8 @@ export async function handleShutdown(
 
   logger.warn(`Bot-Shutdown ausgelöst von ${interaction.user.tag} (${interaction.user.id}). Grund: ${reason}`);
 
-  setTimeout(async () => {
+  // Starte Shutdown-Prozess asynchron - nicht auf Interaction warten
+  (async () => {
     try {
       // Datenbankverbindung sauber schließen
       await mongoose.connection.close();
@@ -55,5 +56,5 @@ export async function handleShutdown(
     client.destroy();
     logger.info('Discord-Client beendet. Shutdown abgeschlossen.');
     process.exit(0);
-  }, 1500);
+  })();
 }

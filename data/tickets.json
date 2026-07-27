@@ -1,29 +1,8 @@
 {
-  "tickets": {
-    "1525487913708683264": {
-      "channelId": "1525487913708683264",
-      "guildId": "1511029825358532701",
-      "ownerId": "1454112721174921343",
-      "groupId": "support",
-      "categoryId": "support-general",
-      "status": "open",
-      "priority": "medium",
-      "handlerId": null,
-      "additionalUserIds": [],
-      "subject": "hilfe",
-      "controlMessageId": null,
-      "createdAt": 1783775061167,
-      "claimedAt": null,
-      "closedAt": null,
-      "closedBy": null,
-      "archivedAt": null,
-      "deleteAt": null,
-      "number": 5
-    }
-  },
-  "nextTicketNumber": 6,
+  "tickets": {},
+  "nextTicketNumber": 7,
   "lastCreationByUser": {
-    "1454112721174921343": 1783775061167
+    "1454112721174921343": 1784648918656
   },
   "panelMessages": {
     "1519681450725740574": "1523367094606102700"

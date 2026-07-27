@@ -6,6 +6,7 @@ import { DeveloperService } from '../../services/DeveloperService';
 import { createDevEmbed } from '../../utils/devEmbed';
 import { logger } from '../../utils/logger';
 import { LogLevel } from '../../types/developer';
+import { reportError, extractCommandOptions } from '../../utils/errorReporter';
 
 import { handlePing } from './handlers/ping';
 import { handleStatus } from './handlers/status';
@@ -173,21 +174,22 @@ const command: BotCommand = {
       return;
     }
 
-    await interaction.deferReply({ ephemeral: true });
-
     const sub = interaction.options.getSubcommand();
 
-    // Nutzung protokollieren (für /dev stats) - VOR der eigentlichen Ausführung,
-    // damit auch fehlgeschlagene Aufrufe gezählt werden.
-    DeveloperService.recordCommandUsage({
-      commandName: `dev ${sub}`,
-      userId: interaction.user.id,
-      username: interaction.user.tag,
-      guildId: interaction.guildId,
-      timestamp: Date.now(),
-    });
-
     try {
+      // Defer reply immediately to prevent 3-second timeout
+      await interaction.deferReply({ ephemeral: true });
+
+      // Nutzung protokollieren (für /dev stats) - VOR der eigentlichen Ausführung,
+      // damit auch fehlgeschlagene Aufrufe gezählt werden.
+      DeveloperService.recordCommandUsage({
+        commandName: `dev ${sub}`,
+        userId: interaction.user.id,
+        username: interaction.user.tag,
+        guildId: interaction.guildId,
+        timestamp: Date.now(),
+      });
+
       switch (sub) {
         case 'ping':
           await handlePing(interaction, client);
@@ -215,13 +217,13 @@ const command: BotCommand = {
             await handleReloadAll(interaction, client);
           } else if (scope === 'command') {
             if (!name) {
-              await replyError(interaction, 'Bitte gib einen Command-Namen an (`name`).');
+              await interaction.editReply({ content: '❌ Bitte gib einen Command-Namen an (`name`).' });
               return;
             }
             await handleReloadCommand(interaction, client, name);
           } else if (scope === 'category') {
             if (!name) {
-              await replyError(interaction, 'Bitte gib eine Kategorie an (`name`), z.B. "developer".');
+              await interaction.editReply({ content: '❌ Bitte gib eine Kategorie an (`name`), z.B. "developer".' });
               return;
             }
             await handleReloadCategory(interaction, client, name);
@@ -301,26 +303,28 @@ const command: BotCommand = {
         }
 
         default:
-          await replyError(interaction, `Unbekannter Subcommand: ${sub}`);
+          await interaction.editReply({ content: `❌ Unbekannter Subcommand: ${sub}` });
       }
     } catch (err) {
-      logger.error(`Fehler in /dev ${sub}: ${err}`);
+      // Sammle alle Fehlerinformationen
+      const errorContext = {
+        userId: interaction.user.id,
+        username: interaction.user.tag,
+        commandName: 'dev',
+        subcommand: sub,
+        options: extractCommandOptions(interaction),
+        guildId: interaction.guildId,
+      };
+
+      // Registriere den Fehler im DeveloperService
       DeveloperService.recordError({
         message: err instanceof Error ? err.message : String(err),
         stack: err instanceof Error ? err.stack : undefined,
-        area: `dev ${sub}`,
+        area: `dev ${sub} (${interaction.user.tag})`,
       });
 
-      const embed = createDevEmbed(interaction, {
-        title: '❌ Ein Fehler ist aufgetreten',
-        color: 0xed4245,
-      }).setDescription(`\`\`\`${String(err)}\`\`\``);
-
-      if (interaction.deferred || interaction.replied) {
-        await interaction.editReply({ embeds: [embed] }).catch(() => {});
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true }).catch(() => {});
-      }
+      // Sende detaillierte Fehlermeldung an den Benutzer
+      await reportError(interaction, err, errorContext);
     }
   },
 };
