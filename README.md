@@ -14,25 +14,25 @@
 
 ## Was das hier ist
 
-Ich habe diesen Bot gebaut, weil ich einen richtigen, sauberen Sicherheitsbot für Discord haben wollte, nicht irgendeinen Baukasten-Bot mit hundert Servern und generischen Funktionen. Läuft komplett in TypeScript mit discord.js v14, dazu ein eigenes Web-Dashboard, das im selben Prozess wie der Bot läuft, damit beide immer auf denselben Daten und derselben Logik arbeiten.
+Ich habe diesen Bot gebaut, weil ich im Prinzip einen sauberen Sicherheitsbot für Discord haben wollte. Der Bot läuft komplett in TypeScript mit discord.js v14, und dazu ein eigenes Web Dashboard, das im selben Prozess wie der Bot läuft damit beide immer auf denselben Daten und derselben Logik arbeiten.
 
-Der Bot kann Raids und Spam automatisch erkennen und eindämmen, übernimmt die komplette Moderation, hat ein Ticket-System und lässt sich über eigene Text-Befehle pro Server anpassen, ähnlich wie man das von BotGhost kennt.
+Der Bot kann Raids und Spam automatisch erkennen und übernimmt die komplette Moderation, hat ein Ticket System und lässt sich über eigene Text Befehle pro Server anpassen.
 
 ---
 
 <h2 id="features"><img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=32&pause=4000&color=68818F&center=false&vCenter=false&repeat=true&width=900&lines=Kernfunktionen" alt="Typing SVG" /></h2>
 
-**Anti-Raid** merkt, wenn plötzlich ungewöhnlich viele Leute in kurzer Zeit joinen, und geht dann automatisch in einen Lockdown, der sich nach Ablauf von selbst wieder aufhebt.
+**Anti Raid** merkt, wenn plötzlich ungewöhnlich viele Leute in kurzer Zeit joinen, und geht dann automatisch in einen Lockdown, der sich nach Ablauf von selbst wieder aufhebt.
 
-**Anti-Spam** achtet auf Nachrichtenrate, Wiederholungen, Mass-Mentions und Spam-Links und reagiert direkt mit Mute und Löschen der Nachrichten.
+**Anti Spam** achtet auf Nachrichtenrate, Wiederholungen, Mass-Mentions und Spam-Links und reagiert direkt mit Mute und Löschen der Nachrichten.
 
-**Rollen-Hierarchie** wird konsequent durchgesetzt, auch über das Dashboard: Ein Moderator kann niemanden sanktionieren, der eine höhere oder gleichrangige Rolle hat.
+**Rollen Hierarchie** wird konsequent durchgesetzt, auch über das Dashboard: Ein Moderator kann niemanden sanktionieren, der eine höhere oder gleichrangige Rolle hat.
 
-**Das Web-Dashboard** zeigt Mitglieder live mit Online-Status, lässt Rollen direkt zuweisen oder entfernen, Kick/Ban/Mute per Klick ausführen, Willkommens- und Abschiedsnachrichten einstellen, Regeln posten und alle Logs durchsuchen, alles abgesichert über OAuth2.
+**Das Web Dashboard** zeigt Mitglieder live mit Online-Status, lässt Rollen direkt zuweisen oder entfernen, Kick/Ban/Mute per Klick ausführen, Willkommens- und Abschiedsnachrichten einstellen, Regeln posten und alle Logs durchsuchen, alles abgesichert über OAuth2.
 
-**Eigene Server-Befehle** kann sich jeder Server selbst anlegen, ohne dass dafür ein Slash-Command-Redeploy nötig wäre.
+**Eigene Server Befehle** kann sich jeder Server selbst anlegen, ohne dass dafür ein Slash-Command-Redeploy nötig wäre.
 
-**Ein Ticket-System** ist ebenfalls dabei, mit eigener Kategorie-Verwaltung.
+**Ein Ticket System** ist ebenfalls dabei, mit eigener Kategorie-Verwaltung.
 
 Und jede einzelne Aktion, egal ob per Slash-Command oder über das Dashboard ausgelöst, wird identisch in MongoDB protokolliert und optional zusätzlich in einen Log-Kanal gepostet.
 
