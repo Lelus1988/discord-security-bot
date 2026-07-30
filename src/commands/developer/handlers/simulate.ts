@@ -161,8 +161,6 @@ async function simulateSpam(): Promise<string[]> {
   return lines;
 }
 
-// ---------- Nuke ----------
-
 async function simulateNuke(): Promise<string[]> {
   const lines: string[] = [];
 
